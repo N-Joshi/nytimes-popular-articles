@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import type { Article } from '../types/Articles';
 
-export const API_KEY = 'Qlh1bEUZNnwoAR6F47AiQhDqEGsUDGdl';
+export const API_KEY = '';
 export const BASE_URL = 'https://api.nytimes.com/svc/mostpopular/v2/viewed';
 
 export const fetchArticles = async (period: number = 1): Promise<Article[]> => {
