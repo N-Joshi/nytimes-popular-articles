@@ -1,36 +1,86 @@
-// App.test.tsx
-import { render, screen } from '@testing-library/react';
-import React from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
-import App from '../components/App';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { Route, Routes,MemoryRouter } from 'react-router-dom';
 import ArticleDetail from '../components/ArticleDetail';
-import ArticlesList from '../components/ArticlesList';
+import { fetchArticleById } from '../api/newYorkTimesApi';
+import type { Article } from '../types/Articles';
 
-jest.mock('../components/ArticlesList', () => () => (
-  <div>Articles List Component</div>
-));
-jest.mock('../components/ArticleDetail', () => () => (
-  <div>Article Detail Component</div>
-));
+jest.mock('../api/newYorkTimesApi', () => ({
+  fetchArticleById: jest.fn(),
+}));
 
-describe('App Component', () => {
-  test('renders ArticlesList component at root path', () => {
-    render(<App />);
+const mockArticle: Article = {
+  id: 1,
+  title: 'Sample Article',
+  abstract: 'This is a sample abstract.',
+  byline: 'By Author',
+  published_date: '2024-07-24',
+  url: 'https://example.com',
+  media: [
+    {
+      'media-metadata': [
+        { url: '' },
+        { url: '' },
+        { url: 'https://example.com/image.jpg' }
+      ]
+    }
+  ]
+};
 
-    expect(screen.getByText('Articles List Component')).toBeInTheDocument();
+describe('ArticleDetail', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
-  test('renders ArticleDetail component for /article/:id path', async () => {
+  test('displays loading spinner while loading', () => {
+    (fetchArticleById as jest.Mock).mockResolvedValueOnce(mockArticle);
+
     render(
       <MemoryRouter initialEntries={['/article/1']}>
         <Routes>
-          <Route path="/" element={<ArticlesList />} />
+          <Route path="/article/:id" element={<ArticleDetail />} />
+        </Routes>
+        </MemoryRouter>
+    );
+
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
+  });
+
+  test('displays article details when loaded', async () => {
+    (fetchArticleById as jest.Mock).mockResolvedValueOnce(mockArticle);
+
+    render(
+      <MemoryRouter initialEntries={['/article/1']}>
+        <Routes>
           <Route path="/article/:id" element={<ArticleDetail />} />
         </Routes>
       </MemoryRouter>
     );
 
-    await screen.findByText('Article Detail Component');
+    await waitFor(() => {
+      expect(screen.getByText('Sample Article')).toBeInTheDocument();
+      expect(screen.getByText('This is a sample abstract.')).toBeInTheDocument();
+      expect(screen.getByText('By Author')).toBeInTheDocument();
+      expect(screen.getByText('2024-07-24')).toBeInTheDocument();
+      expect(screen.getByText('Read more')).toHaveAttribute('href', 'https://example.com');
+    });
+
+    const image = screen.getByRole('img');
+    expect(image).toHaveAttribute('src', 'https://example.com/image.jpg');
+  });
+
+  test('displays article not found message when no article is found', async () => {
+    (fetchArticleById as jest.Mock).mockResolvedValueOnce(null);
+
+    render(
+      <MemoryRouter initialEntries={['/article/1']}>
+        <Routes>
+          <Route path="/article/:id" element={<ArticleDetail />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Article not found')).toBeInTheDocument();
+    });
   });
 });

@@ -14,9 +14,6 @@ This project is a simple web application that fetches and displays the most popu
 
 ## Getting Started
 
-### Please note the api and sonar keys are not shared in the repo due to security reasons
-
-
 ### Prerequisites
 
 - Node.js (v18 or higher recommended)
