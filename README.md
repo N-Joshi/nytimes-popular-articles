@@ -1,46 +1,148 @@
-# Getting Started with Create React App
+# NY Times Popular Articles
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a simple web application that fetches and displays the most popular articles from the NY Times API. Built using React and TypeScript, it features a master/detail view where users can see a list of articles and view detailed information about each article. The project also includes testing and build scripts to ensure code quality and maintainability.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Fetch and display the most popular articles from the NY Times API.
+- Show article details in a separate view when an article is selected.
+- Responsive design with a clean UI.
+- Unit tests and UI tests using Jest and React Testing Library.
+- Static code analysis with ESLint and Prettier.
+- Code coverage reports.
+- Integration with SonarQube for code quality analysis.
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js (v18 or higher recommended)
+- npm or yarn
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
 
-### `npm run build`
+   ```bash
+   git clone <YOUR_REPOSITORY_URL>
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Navigate to the project directory:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   cd nytimes-popular-articles
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Install the dependencies:
 
-### `npm run eject`
+   ```bash
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Configuration
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Obtain an API key from NY Times:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+   - Sign up for an API key at [NY Times Developer](https://developer.nytimes.com/get-started).
+   - Replace `YOUR_API_KEY` in `src/api.ts` with your actual API key.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Running the Application
 
-## Learn More
+1. Start the development server:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm start
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   The application will be available at `http://localhost:3000`.
+
+### Building the Project
+
+1. Build the project for production:
+
+   ```bash
+   npm run build
+   ```
+
+   The build output will be located in the `build` directory.
+
+### Running Tests
+
+1. Run unit tests:
+
+   ```bash
+   npm test
+   ```
+
+2. Run tests with code coverage:
+
+   ```bash
+   npm run coverage
+   ```
+
+### Static Code Analysis
+
+1. Run ESLint:
+
+   ```bash
+   npm run lint
+   ```
+
+2. Format code with Prettier:
+
+   ```bash
+   npm run format
+   ```
+
+### SonarQube Integration
+
+1. Install SonarQube Scanner globally:
+
+   ```bash
+   npm install -g sonar-scanner
+   ```
+
+2. Configure SonarQube settings in `sonar-project.properties`:
+
+   ```properties
+        sonar.projectKey=nytimes-popular-articles
+        sonar.projectName=nytimes-popular-articles
+        sonar.projectVersion=1.0
+        sonar.sources=src
+        sonar.tests=src
+        sonar.test.inclusions=**/*.test.tsx,**/*.test.ts
+        sonar.javascript.lcov.reportPaths=coverage/lcov.info
+        sonar.host.url=http://localhost:9000
+        sonar.token=
+   ```
+
+3. Run SonarQube analysis:
+
+   ```bash
+   npm sonar
+   ```
+
+### Project Structure
+
+- `src/`
+  - `components/` - React components for the application.
+  - `pages/` - React pages including `ArticleList` and `ArticleDetail`.
+  - `api/` - API call functions.
+  - `App.tsx` - Main application component.
+  - `index.tsx` - Entry point of the application.
+- `public/` - Static assets.
+- `tests/` - Test files.
+- `sonar-project.properties` - SonarQube configuration file.
+
+
+### License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+### Snapshots of Code Coverage and Sonar Qube Integration Run
+
+![Sonar Qube](public/sonarqube.png)
+
+
+![Code Coverage](public/codecoverage.png)
+
